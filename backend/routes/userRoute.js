@@ -1,5 +1,5 @@
 const express=require('express');
-const { regUser,logInUser, logoutUser,forgetPsw, resetPsw, getUserData, updatePassword, updateProfile } = require('../controllers/userCtrl');
+const { regUser,logInUser, logoutUser,forgetPsw, resetPsw, getUserData, updatePassword, updateProfile, getAllUsers, getAUserForAdmin, updateUserRole, deleteUser } = require('../controllers/userCtrl');
 const router=express.Router();
 const {authUser,roleAuth} = require('../middleware/authenticateUser');
 
@@ -22,6 +22,19 @@ router.get('/user',authUser,getUserData);
 router.put('/password/update',authUser,updatePassword);
 
 router.put('/user/update',authUser,updateProfile);
+
+
+//admin accessing profiles of users
+
+router.get('/admin/users',authUser,roleAuth('admin'),getAllUsers);
+
+router.get('/admin/user/:id',authUser,roleAuth('admin'),getAUserForAdmin);
+
+
+router.put('/admin/user/:id',authUser,roleAuth('admin'),updateUserRole);
+
+
+router.delete('/admin/user/:id',authUser,roleAuth('admin'),deleteUser);
 
 
 
